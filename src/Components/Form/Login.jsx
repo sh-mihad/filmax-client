@@ -10,6 +10,8 @@ const Login = () => {
 
     const {register,handleSubmit,formState:{errors}} = useForm();
 
+    const {loginWithForm} = useContext(AuthProvider)
+
     const onSubmit=data=>{
         console.log(data.email);
     }

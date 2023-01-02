@@ -1,13 +1,40 @@
 import { Button, FileInput, Label, TextInput } from 'flowbite-react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { Link } from 'react-router-dom';
+import { AuthProvider } from '../ContextApi/ContextApi';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
+    const {registerWithForm} = useContext(AuthProvider)
+
     const onSubmit = data => {
-        console.log(data.email);
+       const image = data.image[0]
+       const email = data.email;
+       const name = data.name;
+       const password = data.password
+       const user = {email,password,name}
+       console.log(user);
+        const formData = new FormData();
+        formData.append('image', image)
+        // console.log(data.image[0])
+       fetch("https://api.imgbb.com/1/upload?key=2fbe1796a4bf3cd52ba5028ba7992a29",{
+        method:"POST",
+        body: formData
+       }).then((response) => response.json())
+       .then((result) => {
+         if(result.success){
+            registerWithForm(email,password)
+            .then(data=>{
+                const user = data.user;
+                console.log(user)
+            })
+         }
+       })
+       .catch((error) => {
+         console.error('Error:', error);
+       });
     }
 
     return (
@@ -38,7 +65,10 @@ const Register = () => {
                         />
                     </div>
                     <FileInput
-                        id="file"
+                        id="file" 
+
+                        // type="file"
+                        {...register("image")}
                     />
                 </div>
                 <div>

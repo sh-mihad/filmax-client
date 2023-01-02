@@ -1,9 +1,12 @@
 import { Button, Navbar } from 'flowbite-react';
-import React from 'react';
+import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import Logo from "../../assest/logo.png"
+import { AuthProvider } from '../../ContextApi/ContextApi';
 
 const Menubar = () => {
+  const {user} = useContext(AuthProvider)
+  console.log(user)
   const menuList = <>
   <Link to="/"> Home </Link>
   <Link to="/"> About </Link>
@@ -13,9 +16,10 @@ const Menubar = () => {
 
     return (
         <Navbar
+        className="bg-black rounded-none"
         fluid={true}
         rounded={true}
-        className="bg-black rounded-none"
+        
       >
         <Navbar.Brand href="/">
           <img
@@ -26,15 +30,11 @@ const Menubar = () => {
           />
         </Navbar.Brand>
         <div className="flex gap-3 md:order-2">
-          <Link to="/login">
-          <Button className='bg-red-600'>
-            Login
-            </Button>
+          <Link to="/login"> 
+            <button className='bg-red-700 px-4 py-2 rounded-lg text-white'> Login</button>
           </Link>
           <Link to="/register">
-          <Button className='bg-red-600'>
-            Register
-            </Button>
+          <button className='bg-red-700 px-4 py-2 rounded-lg text-white'> Register</button>
           </Link>
           <Navbar.Toggle />
         </div>
