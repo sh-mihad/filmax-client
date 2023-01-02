@@ -1,6 +1,7 @@
 import { Button, Checkbox, Label, TextInput } from 'flowbite-react';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthProvider } from '../../ContextApi/ContextApi';
 
@@ -10,10 +11,30 @@ const Login = () => {
 
     const {register,handleSubmit,formState:{errors}} = useForm();
 
-    const {loginWithForm} = useContext(AuthProvider)
+    const {loginWithForm,googleLogin} = useContext(AuthProvider)
+
+    const handleGoogleLogin =()=>{
+        googleLogin()
+        .then(data=>{
+            const user = data.user;
+            console.log(user)
+        }).catch(err=>{
+            toast.error(err.message)
+        })
+    }
 
     const onSubmit=data=>{
-        console.log(data.email);
+       const email = data.email;
+       const password = data.password
+       console.log(email,password)
+       loginWithForm(email,password)
+       .then(data=>{
+        const user = data.user;
+        console.log(user);
+       })
+       .catch(err=>{
+        toast.error(err.message)
+       })
     }
 
     return (
@@ -64,7 +85,7 @@ const Login = () => {
 
             <div className='flex flex-col gap-4 my-4'>
                 <hr />
-                <Button type="submit">
+                <Button onClick={handleGoogleLogin}>
                     Signing With Google
                 </Button>
             </div>

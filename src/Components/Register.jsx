@@ -1,13 +1,14 @@
 import { Button, FileInput, Label, TextInput } from 'flowbite-react';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'react-hot-toast';
 import { Link } from 'react-router-dom';
 import { AuthProvider } from '../ContextApi/ContextApi';
 
 const Register = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const {registerWithForm} = useContext(AuthProvider)
+    const {registerWithForm,updeteUserProfile} = useContext(AuthProvider)
 
     const onSubmit = data => {
        const image = data.image[0]
@@ -25,10 +26,16 @@ const Register = () => {
        }).then((response) => response.json())
        .then((result) => {
          if(result.success){
+           const photoURL=result.data.url
             registerWithForm(email,password)
             .then(data=>{
                 const user = data.user;
-                console.log(user)
+                updeteUserProfile(name,photoURL)
+                .then(()=>{})
+                .catch(err=>{
+                    toast.error(err)
+                    console.log(err)
+                })
             })
          }
        })
