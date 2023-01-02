@@ -1,9 +1,11 @@
 import React from 'react';
+import comeingSoon from "../../assest/comeing soon.jpg"
 
 const Home = () => {
     return (
         <div>
-          <p className='text-blue-800'>this is hello world</p>
+         
+          <img src={comeingSoon} className="w-2/4 mx-auto" alt="" />
         </div>
     );
 };

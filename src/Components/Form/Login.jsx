@@ -2,7 +2,7 @@ import { Button, Checkbox, Label, TextInput } from 'flowbite-react';
 import React, { useContext } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'react-hot-toast';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { AuthProvider } from '../../ContextApi/ContextApi';
 
 const Login = () => {
@@ -12,6 +12,11 @@ const Login = () => {
     const {register,handleSubmit,formState:{errors}} = useForm();
 
     const {loginWithForm,googleLogin} = useContext(AuthProvider)
+
+   const navigate = useNavigate()
+   const location = useLocation()
+   const from = location.state?.from?.pathname || "/"
+
 
     const handleGoogleLogin =()=>{
         googleLogin()
@@ -30,7 +35,7 @@ const Login = () => {
        loginWithForm(email,password)
        .then(data=>{
         const user = data.user;
-        console.log(user);
+        navigate(from, {replace:true})
        })
        .catch(err=>{
         toast.error(err.message)
